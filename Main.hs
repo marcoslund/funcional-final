@@ -8,7 +8,7 @@
 --                                     dir "goodbye" $ path $ \s -> ok $ "Goodbye " ++ s
 --                                   ]
 
-{-# LANGUAGE FlexibleContexts, OverlappingInstances #-}
+{-# LANGUAGE FlexibleContexts, OverlappingInstances #-} -- OverlappingInstances is deprecated
 {-# OPTIONS_GHC -F -pgmFhsx2hs #-}
 module Main where
 
@@ -18,7 +18,8 @@ import Data.String (IsString(fromString))
 import Data.Text   (Text)
 import Happstack.Server.HSP.HTML
 import Happstack.Server (Request(rqMethod), ServerPartT, askRq, nullConf, simpleHTTP)
-import HSP.Identity () -- instance (XMLGen Identity)
+import Happstack.Server.XMLGenT ()
+-- import HSP.Identity () -- instance (XMLGen Identity)
 
 hello :: ServerPartT IO XML
 hello = unXMLGenT
