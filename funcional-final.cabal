@@ -28,6 +28,7 @@ executable funcional-final
                        hsx-jmacro >=7.3.8.1 && <7.4,
                        happstack-jmacro >=7.0.12.3 && <7.1,
                        mtl,
-                       text
+                       text,
+                       hsp
   -- hs-source-dirs:
   default-language:    Haskell2010

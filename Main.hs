@@ -18,7 +18,8 @@ import Data.String (IsString(fromString))
 import Data.Text   (Text)
 import Happstack.Server.HSP.HTML
 import Happstack.Server (Request(rqMethod), ServerPartT, askRq, nullConf, simpleHTTP)
-import Happstack.Server.XMLGenT ()
+import Happstack.Server.XMLGenT
+import HSP.XML
 -- import HSP.Identity () -- instance (XMLGen Identity)
 
 hello :: ServerPartT IO XML
