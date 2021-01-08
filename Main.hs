@@ -8,41 +8,25 @@
 --                                     dir "goodbye" $ path $ \s -> ok $ "Goodbye " ++ s
 --                                   ]
 
-{-# LANGUAGE FlexibleContexts, OverlappingInstances #-} -- OverlappingInstances is deprecated
-{-# OPTIONS_GHC -F -pgmFhsx2hs #-}
+{-# LANGUAGE QuasiQuotes, OverloadedStrings #-}
 module Main where
 
-import Control.Applicative ((<$>))
-import Control.Monad.Identity (Identity(runIdentity))
-import Data.String (IsString(fromString))
-import Data.Text   (Text)
-import Happstack.Server.HSP.HTML
-import Happstack.Server (Request(rqMethod), ServerPartT, askRq, nullConf, simpleHTTP)
-import Happstack.Server.XMLGenT
-import HSP.XML
--- import HSP.Identity () -- instance (XMLGen Identity)
+import Happstack.Server (Request(rqMethod), ServerPartT, askRq, nullConf, simpleHTTP, dir, path, ok)
+import Control.Monad (msum)
+import           Data.Text.Lazy (Text)
+import qualified Data.Text.Lazy.IO as T
+import HSP.HTML4                   (renderAsHTML)
+import HSP.Monad                   (HSPT(unHSPT))
+import HSP.XML                     (XML, fromStringLit)
+import HSP.XMLGenerator            (Attr(..), XMLGenT, XMLGen(..), EmbedAsAttr(..), EmbedAsChild(..), unXMLGenT)
+import Language.Haskell.HSX.QQ     (hsx)
 
-hello :: ServerPartT IO XML
-hello = unXMLGenT
- <html>
-  <head>
-   <title>Hello, HSP!</title>
-  </head>
-  <body>
-   <h1>Hello HSP!</h1>
-   <p>We can insert Haskell expression such as this: <% sum [1 .. (10 :: Int)] %></p>
-   <p>We can use the ServerPartT monad too. Your request method was: <% getMethod %></p>
-   <hr/>
-   <p>We don't have to escape & or >. Isn't that nice?</p>
-   <p>If we want <% "<" %> then we have to do something funny.</p>
-   <p>But we don't have to worry about escaping <% "<p>a string like this</p>" %></p>
-   <p>We can also nest <% <span>like <% "this." %> </span> %></p>
-  </body>
- </html>
-     where
-     getMethod :: XMLGenT (ServerPartT IO) String
-     getMethod = show . rqMethod <$> askRq
+html :: (Functor m, Monad m) => XMLGenT (HSPT XML m) XML
+html = [hsx| <p class="some">I haz a paragraph!</p> |]
+hello = T.putStrLn $ renderAsHTML (unHSPT $ unXMLGenT $ html)
 
 main :: IO ()
-main = simpleHTTP nullConf $ hello
+main = simpleHTTP nullConf $ msum [ dir "hello" $ ok "Hello world!",
+                                     dir "goodbye" $ path $ \s -> ok $ "Goodbye " ++ s
+                                   ]
 
