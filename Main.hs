@@ -1,13 +1,24 @@
-{-# LANGUAGE FlexibleContexts, FlexibleInstances,
+{-# LANGUAGE CPP, DeriveDataTypeable, FlexibleContexts, FlexibleInstances,
     MultiParamTypeClasses, ScopedTypeVariables,
     TypeFamilies, TypeSynonymInstances,
-    QuasiQuotes, OverloadedStrings #-}
+    QuasiQuotes, OverloadedStrings, GeneralizedNewtypeDeriving,
+    TemplateHaskell, RecordWildCards #-}
+
 module Main where
 
 import Control.Applicative
 import Control.Applicative.Indexed
     (IndexedFunctor(..), IndexedApplicative(..))
+import Control.Exception           ( bracket )
 import Control.Monad               (msum)
+import Control.Monad.Reader        ( ask )
+import Control.Monad.State         ( get, put )
+import Data.Acid            ( AcidState, Query, Update
+                            , makeAcidic, openLocalState )
+import Data.Acid.Advanced   ( query', update' )
+import Data.Acid.Local      ( createCheckpointAndClose )
+import Data.Data                   ( Data, Typeable )
+import Data.SafeCopy        ( base, deriveSafeCopy )
 import Data.Text.Lazy              (Text)
 import qualified Data.Text.Lazy    as Lazy
 import qualified Data.Text         as Strict
@@ -108,9 +119,30 @@ postForm =
    <*> (labelText "message:" <++ br) ++> textarea 80 40 "" <++ br
    <*  inputSubmit "post"
 
-postPage2 :: AppT IO Response
+
+data CounterState = CounterState { count :: Integer }
+    deriving (Eq, Ord, Read, Show, Data, Typeable)
+
+$(deriveSafeCopy 0 'base ''CounterState)
+
+initialCounterState :: CounterState
+initialCounterState = CounterState 0
+
+incCountBy :: Integer -> Update CounterState Integer
+incCountBy n =
+    do c@CounterState{..} <- get
+       let newCount = count + n
+       put $ c { count = newCount }
+       return newCount
+
+peekCount :: Query CounterState Integer
+peekCount = count <$> ask
+
+$(makeAcidic ''CounterState ['incCountBy, 'peekCount])
+
+--postPage2 :: AppT IO Response
 postPage2 =
- dir "post2" $
+ --dir "post2" $
   let action = ("/post2" :: Text) in
   appTemplate "post 2" () $[hsx|
    <% reform (form action) "post2" displayMsg Nothing postForm %>
@@ -119,7 +151,27 @@ postPage2 =
   displayMsg msg =
     appTemplate "Your Message" () $ renderMessage msg
 
+handlers :: AcidState CounterState -> ServerPart Response
+handlers acid = msum
+  [ dir "peek" $ do
+      c <- query' acid PeekCount
+      ok $ toResponse $"peeked at the count and saw: " ++ show c
+  , dir "post2" $ do 
+      --c <- query' acid PeekCount 
+      unHSPT $ unXMLGenT $ postPage2 
+  , do nullDir
+       c <- update' acid (IncCountBy 1)
+       ok $ toResponse $ "New count is: " ++ show c
+  ]
+
 main :: IO ()
+main =
+  bracket (openLocalState initialCounterState)
+          (createCheckpointAndClose)
+           (\acid ->
+               simpleHTTP nullConf (handlers acid))
+
+{- main :: IO ()
 main = simpleHTTP nullConf $ unHSPT $ unXMLGenT $ do
  decodeBody (defaultBodyPolicy "/tmp/" 0 10000 10000)
  msum [ postPage2
@@ -132,4 +184,4 @@ main = simpleHTTP nullConf $ unHSPT $ unXMLGenT $ do
                </a>
              </li>
             </ul> |]
-      ]
+      ] -}
