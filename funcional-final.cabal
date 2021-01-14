@@ -31,10 +31,14 @@ executable funcional-final
                        reform-happstack < 0.3,
                        reform-hsp < 0.3,
                        acid-state < 0.17,
+                       ixset < 1.2,
+
                        mtl,
                        text,
                        hsp,
                        hsx2hs,
-                       safecopy
+                       safecopy,
+                       time,
+                       blaze-html
   -- hs-source-dirs:
   default-language:    Haskell2010
