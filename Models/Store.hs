@@ -2,7 +2,7 @@
     RecordWildCards, TemplateHaskell, TypeFamilies,
     OverloadedStrings #-}
 
-module Models.Blog where
+module Models.Store where
 
 import Data.Data            (Data, Typeable)
 import Data.IxSet           ( Indexable(..), IxSet(..), ixFun, ixSet )
@@ -14,9 +14,9 @@ import Data.Time            (UTCTime(..))
 
 ------------------------------------------------
 
-newtype PostId = PostId { unPostId :: Integer }
+newtype ProductId = ProductId { unProductId :: Integer }
     deriving (Eq, Ord, Data, Enum, Typeable)
-$(deriveSafeCopy 0 'base ''PostId)
+$(deriveSafeCopy 0 'base ''ProductId)
 
 ------------------------------------------------
 
@@ -28,60 +28,61 @@ $(deriveSafeCopy 0 'base ''Status)
 
 ------------------------------------------------
 
-newtype Title     = Title Text
+newtype Name     = Name Text
     deriving (Eq, Ord, Data, Typeable)
-$(deriveSafeCopy 0 'base ''Title)
+$(deriveSafeCopy 0 'base ''Name)
 
 ------------------------------------------------
 
-newtype Author    = Author Text
+newtype Brand    = Brand Text
     deriving (Eq, Ord, Data, Typeable)
-$(deriveSafeCopy 0 'base ''Author)
+$(deriveSafeCopy 0 'base ''Brand)
 
 ------------------------------------------------
 
-newtype Tag       = Tag Text
+newtype Description = Description Text
     deriving (Eq, Ord, Data, Typeable)
-$(deriveSafeCopy 0 'base ''Tag)
+$(deriveSafeCopy 0 'base ''Description)
 
 ------------------------------------------------
 
-newtype WordCount = WordCount Int
+newtype Price = Price Int
     deriving (Eq, Ord, Data, Typeable)
-$(deriveSafeCopy 0 'base ''WordCount)
+$(deriveSafeCopy 0 'base ''Price)
 
 ------------------------------------------------
 
-data Post = Post
-    { postId  :: PostId
-    , title   :: Text
-    , author  :: Text
-    , body    :: Text
+data Product = Product
+    { productId  :: ProductId
+    , name   :: Text
+    , brand  :: Text
+    , description    :: Text
     , date    :: UTCTime
     , status  :: Status
-    , tags    :: [Text]
+    , price   :: Int
+    --, tags    :: [Text]
     }
     deriving (Eq, Ord, Data, Typeable)
     
-$(deriveSafeCopy 0 'base ''Post)
+$(deriveSafeCopy 0 'base ''Product)
 
-instance Indexable Post where
+instance Indexable Product where
   empty = ixSet
-    [ ixFun $ \bp -> [ postId bp ]
-    , ixFun $ \bp -> [ Title  $ title bp  ]
-    , ixFun $ \bp -> [ Author $ author bp ]
+    [ ixFun $ \bp -> [ productId bp ]
+    , ixFun $ \bp -> [ Name  $ name bp  ]
+    , ixFun $ \bp -> [ Brand $ brand bp ]
     , ixFun $ \bp -> [ status bp ]
-    , ixFun $ \bp -> map Tag (tags bp)
+    -- , ixFun $ \bp -> map Tag (tags bp)
     , ixFun $ (:[]) . date  -- point-free, just for variety
-    , ixFun $ \bp -> [ WordCount (length $ Text.words $ body bp) ]
+    -- , ixFun $ \bp -> [ WordCount (length $ Text.words $ body bp) ]
     ]
 
 ------------------------------------------------
 
-data Blog = Blog
-    { nextPostId :: PostId
-    , posts      :: IxSet Post
+data Store = Store
+    { nextProductId :: ProductId
+    , products      :: IxSet Product
     }
     deriving (Data, Typeable)
 
-$(deriveSafeCopy 0 'base ''Blog)
+$(deriveSafeCopy 0 'base ''Store)

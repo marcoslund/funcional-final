@@ -30,5 +30,5 @@ template title headers body =
          H.li $ H.a ! A.href "/drafts" $ "drafts"
          H.li $ H.form ! A.enctype "multipart/form-data"
                        ! A.method "POST"
-                       ! A.action "/new" $ H.button $ "new post"
+                       ! A.action "/new" $ H.button $ "new product"
         body

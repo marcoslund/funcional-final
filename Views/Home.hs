@@ -4,18 +4,18 @@
 
 module Views.Home (home) where
 
-import Models.Blog
-import Persistence.Post
+import Models.Store
+import Persistence.Product
 import Views.Template
-import Views.Post
+import Views.Product
 
 import Data.Acid            (AcidState)
 import Data.Acid.Advanced   (query')
 import Happstack.Server     ( ServerPart, Response, ok)
 
--- | render all the Published posts (ordered newest to oldest)
-home :: AcidState Blog -> ServerPart Response
+-- | render all the Published products (ordered newest to oldest)
+home :: AcidState Store -> ServerPart Response
 home acid =
-    do published <- query' acid (PostsByStatus Published)
+    do published <- query' acid (ProductsByStatus Published)
        ok $ template "home" [] $ do
-         mapM_ postHtml published
+         mapM_ productHtml published

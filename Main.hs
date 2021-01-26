@@ -5,7 +5,7 @@
 module Main where
 
 import Routes               (route)
-import Persistence.Post     (initialBlogState)
+import Persistence.Product  (initialStoreState)
 
 import Control.Exception    (bracket)
 import Data.Acid            (openLocalState)
@@ -15,7 +15,7 @@ import Happstack.Server     ( nullConf, simpleHTTP)
 
 main :: IO ()
 main =
-    do bracket (openLocalState initialBlogState)
+    do bracket (openLocalState initialStoreState)
                (createCheckpointAndClose)
                (\acid ->
                     simpleHTTP nullConf (route acid))
