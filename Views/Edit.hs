@@ -4,10 +4,10 @@
 
 module Views.Edit (edit, new, view, drafts) where
 
-import Models.Blog
-import Persistence.Post
+import Models.Store
+import Persistence.Product
 import Views.Template
-import Views.Post
+import Views.Product
 
 import Control.Applicative  ((<$>), optional)
 import Control.Monad        (msum, mzero)
@@ -22,18 +22,18 @@ import           Text.Blaze.Html ((!), Html)
 import qualified Text.Blaze.Html4.Strict as H
 import qualified Text.Blaze.Html4.Strict.Attributes as A
 
--- | edit an existing blog post
-edit :: AcidState Blog -> ServerPart Response
+-- | edit an existing product
+edit :: AcidState Store -> ServerPart Response
 edit acid = do
- pid   <- PostId <$> lookRead "id"
+ pid   <- ProductId <$> lookRead "id"
  mMsg  <- optional $ lookText "msg"
- mPost <- query' acid (PostById pid)
- case mPost of
+ mProd <- query' acid (ProductById pid)
+ case mProd of
   Nothing ->
-   notFound $ template "no such post" [] $
-                do "Could not find a post with id "
-                   H.toHtml (unPostId pid)
-  (Just p@(Post{..})) -> msum
+   notFound $ template "no such product" [] $
+                do "Could not find a product with id "
+                   H.toHtml (unProductId pid)
+  (Just p@(Product{..})) -> msum
     [ do method GET
          ok $ template "foo" [] $ do
           case mMsg of
@@ -42,113 +42,113 @@ edit acid = do
           H.form ! A.enctype "multipart/form-data"
                   ! A.method "POST"
                   ! A.action (H.toValue $ "/edit?id=" ++
-                                  (show $ unPostId pid)) $ do
-            H.label "title" ! A.for "title"
+                                  (show $ unProductId pid)) $ do
+            H.label "name" ! A.for "name"
             H.input ! A.type_ "text"
-                    ! A.name "title"
-                    ! A.id "title"
+                    ! A.name "name"
+                    ! A.id "name"
                     ! A.size "80"
-                    ! A.value (H.toValue title)
+                    ! A.value (H.toValue name)
             H.br
-            H.label "author" ! A.for "author"
+            H.label "brand" ! A.for "brand"
             H.input ! A.type_ "text"
-                    ! A.name "author"
-                    ! A.id "author"
+                    ! A.name "brand"
+                    ! A.id "brand"
                     ! A.size "40"
-                    ! A.value (H.toValue author)
+                    ! A.value (H.toValue brand)
             H.br
-            H.label "tags" ! A.for "tags"
-            H.input ! A.type_ "text"
-                    ! A.name "tags"
-                    ! A.id "tags"
-                    ! A.size "40"
-                    ! A.value (H.toValue $
-                                Text.intercalate ", " tags)
+            -- H.label "tags" ! A.for "tags"
+            -- H.input ! A.type_ "text"
+            --        ! A.name "tags"
+            --        ! A.id "tags"
+            --        ! A.size "40"
+            --        ! A.value (H.toValue $
+            --                    Text.intercalate ", " tags)
             H.br
-            H.label "body" ! A.for "body"
+            H.label "description" ! A.for "description"
             H.br
             H.textarea ! A.cols "80"
                         ! A.rows "20"
-                        ! A.name "body" $ H.toHtml body
+                        ! A.name "body" $ H.toHtml description
             H.br
             H.button ! A.name "status"
                       ! A.value "publish" $ "publish"
             H.button ! A.name "status"
                       ! A.value "save"    $ "save as draft"
     , do method POST
-         ttl   <- lookText' "title"
-         athr  <- lookText' "author"
-         tgs   <- lookText' "tags"
+         ttl   <- lookText' "name"
+         athr  <- lookText' "brand"
+         -- tgs   <- lookText' "tags"
 
-         bdy   <- lookText' "body"
+         bdy   <- lookText' "description"
          now   <- liftIO $ getCurrentTime
          stts  <- do s <- lookText' "status"
                      case s of
                         "save"    -> return Draft
                         "publish" -> return Published
                         _         -> mzero
-         let updatedPost =
-                 p { title  = ttl
-                   , author = athr
-                   , body   = bdy
+         let updatedProduct =
+                 p { name  = ttl
+                   , brand = athr
+                   , description   = bdy
                    , date   = now
                    , status = stts
-                   , tags   =
-                       map Text.strip $ Text.splitOn "," tgs
+                   --, tags   =
+                   --    map Text.strip $ Text.splitOn "," tgs
                    }
-         update' acid (UpdatePost updatedPost)
+         update' acid (UpdateProduct updatedProduct)
          case status of
            Published ->
-             seeOther ("/view?id=" ++ (show $ unPostId pid))
+             seeOther ("/view?id=" ++ (show $ unProductId pid))
                       (toResponse ())
            Draft     ->
              seeOther ("/edit?msg=saved&id=" ++
-                       (show $ unPostId pid))
+                       (show $ unProductId pid))
                       (toResponse ())
                   ]
 
       where lookText' = fmap toStrict . lookText
 
 
--- | create a new blog post in the database,
+-- | create a new product in the database,
 --   and then redirect to /edit
-new :: AcidState Blog -> ServerPart Response
+new :: AcidState Store -> ServerPart Response
 new acid = do
   method POST
   now <- liftIO $ getCurrentTime
-  post <- update' acid (NewPost now)
-  let url = "/edit?id=" ++ show (unPostId $ postId post)
+  prod <- update' acid (NewProduct now)
+  let url = "/edit?id=" ++ show (unProductId $ productId prod)
   seeOther url (toResponse ())
 
 
 
--- | view a single blog post
-view :: AcidState Blog -> ServerPart Response
+-- | view a single product
+view :: AcidState Store -> ServerPart Response
 view acid =
-    do pid <- PostId <$> lookRead "id"
-       mPost <- query' acid (PostById pid)
-       case mPost of
+    do pid <- ProductId <$> lookRead "id"
+       mProd <- query' acid (ProductById pid)
+       case mProd of
          Nothing ->
-             notFound $ template "no such post" [] $
-               do "Could not find a post with id "
-                  H.toHtml (unPostId pid)
+             notFound $ template "no such product" [] $
+               do "Could not find a product with id "
+                  H.toHtml (unProductId pid)
          (Just p) ->
-             ok $ template (title p) [] $ do
-                 (postHtml p)
+             ok $ template (name p) [] $ do
+                 (productHtml p)
 
 
 
--- | show a list of all unpublished blog posts
-drafts :: AcidState Blog -> ServerPart Response
+-- | show a list of all unpublished products
+drafts :: AcidState Store -> ServerPart Response
 drafts acid =
-    do drafts <- query' acid (PostsByStatus Draft)
+    do drafts <- query' acid (ProductsByStatus Draft)
        case drafts of
          [] -> ok $ template "drafts" [] $
-               "You have no unpublished posts at this time."
+               "You have no unpublished products at this time."
          _ ->
              ok $ template "home" [] $
                  H.ol $ mapM_ editDraftLink drafts
  where
-  editDraftLink Post{..} =
-    let url = (H.toValue $ "/edit?id=" ++ show (unPostId postId))
-    in H.a ! A.href url $ H.toHtml title
+  editDraftLink Product{..} =
+    let url = (H.toValue $ "/edit?id=" ++ show (unProductId productId))
+    in H.a ! A.href url $ H.toHtml name
