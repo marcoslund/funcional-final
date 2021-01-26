@@ -25,10 +25,13 @@ template title headers body =
                ! A.content "text/html;charset=utf-8"
         sequence_ headers
       H.body $ do
-        H.ul ! A.id "menu" $ do
-         H.li $ H.a ! A.href "/" $ "home"
-         H.li $ H.a ! A.href "/drafts" $ "drafts"
-         H.li $ H.form ! A.enctype "multipart/form-data"
-                       ! A.method "POST"
-                       ! A.action "/new" $ H.button $ "new post"
+        H.ul ! A.id "menu" ! A.class_ "navbar" $ do
+         H.li $ H.a ! A.href "/" $ do
+           H.img ! A.src "images/logo.png" ! A.alt "Logo" ! A.class_ "logo"
+         H.li ! A.class_ "navbar-link" $ H.a ! A.href "/drafts" $ "Categories"
+         H.li ! A.class_ "navbar-link" $ H.a ! A.href "/drafts" $ "Shopping Cart"
+         H.li ! A.class_ "navbar-link" $ H.a ! A.href "/drafts" $ "Checkout"
+         --H.li $ H.form ! A.enctype "multipart/form-data"
+         --              ! A.method "POST"
+         --              ! A.action "/new" $ H.button $ "new post"
         body
