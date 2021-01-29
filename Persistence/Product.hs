@@ -63,10 +63,33 @@ productsByStatus status = do
          products @= status
  return products'
 
+productsByPrice :: (Proxy Price -> IxSet.IxSet Product -> [Product]) -> Query Store [Product]
+productsByPrice func = do
+ Store{..} <- ask
+ let products' =
+        func (Proxy :: Proxy Price) products
+ return products'
+
+productsByPriceAsc :: Query Store [Product]
+productsByPriceAsc = productsByPrice IxSet.toAscList
+
+productsByPriceDesc :: Query Store [Product]
+productsByPriceDesc = productsByPrice IxSet.toDescList
+
+productsByNameAsc :: String -> Query Store [Product]
+productsByNameAsc text = do
+ Store{..} <- ask
+ let products' =
+        IxSet.toAscList (Proxy :: Proxy Name) $
+         products @= Text.pack text
+ return products'
 
 $(makeAcidic ''Store
   [ 'newProduct
   , 'updateProduct
   , 'productById
   , 'productsByStatus
+  , 'productsByPriceAsc
+  , 'productsByPriceDesc
+  , 'productsByNameAsc
   ])
