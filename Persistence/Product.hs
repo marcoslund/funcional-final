@@ -31,6 +31,7 @@ newProduct pubDate =
                            , description = Text.empty
                            , date   = pubDate
                            , status = Draft
+                           , price = 0
                            -- , tags   = []
                            }
        put $ b { nextProductId = succ nextProductId

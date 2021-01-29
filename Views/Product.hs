@@ -26,6 +26,9 @@ productHtml (Product{..}) =
     --   do "tags: "
     --      H.toHtml (Text.intercalate ", " tags)
     H.div ! A.class_ "bdy" $ H.toHtml description
+    H.div ! A.class_ "name" $
+       do "price: "
+          H.toHtml price
     H.div ! A.class_ "product-footer" $ do
      H.span $ H.a !
        A.href (H.toValue $ "/view?id=" ++
