@@ -6,6 +6,7 @@ module Routes (route) where
 
 import Models.Store
 import Views.Home
+import Views.Categories
 import Views.Edit
 
 import Control.Monad        (msum)
@@ -21,6 +22,8 @@ route acid =
             , dir "new"         $ new acid
             , dir "view"        $ view acid
             , dir "drafts"      $ drafts acid
+            , dir "categories"  $ categories acid
             , dir "images"      $ serveDirectory DisableBrowsing ["index.html"] "images"
+            , dir "fonts"      $ serveDirectory DisableBrowsing ["index.html"] "fonts"
             , nullDir          >> home acid
             ]

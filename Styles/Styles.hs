@@ -41,5 +41,11 @@ css =
       , ".home-img { width: 100%; height: 500px; background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/home.jpg'); background-repeat: no-repeat; background-size: cover; }"
       , ".home-img-container { width: 60%; height: 100%; margin: auto; padding: 100px 0; box-sizing: border-box; text-align: center; display: flex; justify-content: center; align-items: center; }"
       , ".home-img h1 { font-size: 4em; color: white; }"
+      , ".container { width: 90%; margin: 20px auto; }"
+      , ".title { font-size: 2.5em; color: #3d4857; border-bottom: 3px #3d4857 solid; padding-bottom: 10px; }"
+      , ".categories-container { display: flex; flex-wrap: wrap; justify-content: center; margin-top: 15px; }"
+      , ".category-container { width: 45%; height: 100px; border: 3px #1d232a solid; margin: 15px 15px; box-sizing: border-box; border-radius: 10px; background-color: #3d4857; padding: 10px; }"
+      , ".category-container a { width: 100%; }"
+      , ".category-title {font-size: 1.75em; color: white; text-align: center; }"
       ]
  in H.style ! A.type_ "text/css" $ H.toHtml s
