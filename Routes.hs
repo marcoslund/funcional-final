@@ -22,7 +22,7 @@ route acid =
             , dir "new"         $ new acid
             , dir "view"        $ view acid
             , dir "drafts"      $ drafts acid
-            , dir "categories"  $ categories acid
+            , dir "categories"  $ viewCategories acid
             , dir "images"      $ serveDirectory DisableBrowsing ["index.html"] "images"
             , dir "fonts"      $ serveDirectory DisableBrowsing ["index.html"] "fonts"
             , nullDir          >> home acid
