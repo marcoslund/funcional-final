@@ -26,6 +26,7 @@ executable funcional-final
                        Views.Template
                        Views.Home
                        Views.Categories
+                       Views.Category
                        Views.Product
                        Views.Edit
   -- other-extensions:
