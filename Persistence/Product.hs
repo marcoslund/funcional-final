@@ -19,6 +19,8 @@ initialStoreState :: Store
 initialStoreState =
     Store { nextProductId = ProductId 1
           , products      = empty
+          , nextCategoryId = CategoryId 1
+          , categories    = empty
           }
 
 
@@ -32,10 +34,12 @@ newProduct pubDate =
                            , date   = pubDate
                            , status = Draft
                            , price = 0
+                           , category = nextCategoryId
                            -- , tags   = []
                            }
        put $ b { nextProductId = succ nextProductId
                , products      = IxSet.insert prod products
+               , nextCategoryId = nextCategoryId
                }
        return prod
 

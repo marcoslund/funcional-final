@@ -52,6 +52,18 @@ $(deriveSafeCopy 0 'base ''Price)
 
 ------------------------------------------------
 
+newtype CategoryId = CategoryId { unCategoryId :: Integer }
+    deriving (Eq, Ord, Data, Enum, Typeable)
+$(deriveSafeCopy 0 'base ''CategoryId)
+
+------------------------------------------------
+
+newtype CategoryName     = CategoryName Text
+    deriving (Eq, Ord, Data, Typeable)
+$(deriveSafeCopy 0 'base ''CategoryName)
+
+------------------------------------------------
+
 data Product = Product
     { productId  :: ProductId
     , name   :: Text
@@ -60,6 +72,7 @@ data Product = Product
     , date    :: UTCTime
     , status  :: Status
     , price   :: Int
+    , category :: CategoryId
     --, tags    :: [Text]
     }
     deriving (Eq, Ord, Data, Typeable)
@@ -80,9 +93,27 @@ instance Indexable Product where
 
 ------------------------------------------------
 
+data Category = Category
+    { categoryId :: CategoryId
+    , categoryName :: CategoryName
+    }
+    deriving (Eq, Ord, Data, Typeable)
+
+$(deriveSafeCopy 0 'base ''Category)
+
+instance Indexable Category where
+  empty = ixSet
+    [ ixFun $ \bp -> [ categoryId bp ]
+    --, ixFun $ \bp -> [ CategoryName $ categoryName bp ]
+    ]
+
+------------------------------------------------
+
 data Store = Store
     { nextProductId :: ProductId
     , products      :: IxSet Product
+    , nextCategoryId :: CategoryId
+    , categories    :: IxSet Category
     }
     deriving (Data, Typeable)
 

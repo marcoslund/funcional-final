@@ -2,7 +2,7 @@
     RecordWildCards, TemplateHaskell, TypeFamilies,
     OverloadedStrings #-}
 
-module Views.Category (category) where
+module Views.Category (viewCategory) where
 
 import Models.Store
 import Persistence.Product
@@ -16,8 +16,8 @@ import           Text.Blaze.Html ((!), Html)
 import qualified Text.Blaze.Html4.Strict as H
 import qualified Text.Blaze.Html4.Strict.Attributes as A
 
-category :: AcidState Store -> ServerPart Response
-category acid =
+viewCategory :: AcidState Store -> ServerPart Response
+viewCategory acid =
     do products <- query' acid (ProductsByStatus Published) -- TODO CHANGE TO GET CATEGORIES
        ok $ template "Category" [] $ do
             H.div ! A.class_ "container" $ do
