@@ -26,46 +26,46 @@ viewCategory acid =
                     H.div ! A.class_ "product-container" $ do
                         H.img ! A.src "images/product.png" ! A.alt "Product"
                         H.div ! A.class_ "category-product-details" $ do
-                            H.h2 $ H.a ! A.href "/" $ "Product"
+                            H.h2 $ H.a ! A.href "/product" $ "Product"
                             H.p $ do "$ 2.899"
                     H.div ! A.class_ "product-container" $ do
                         H.img ! A.src "images/product.png" ! A.alt "Product"
                         H.div ! A.class_ "category-product-details" $ do
-                            H.h2 $ H.a ! A.href "/" $ "Product"
+                            H.h2 $ H.a ! A.href "/product" $ "Product"
                             H.p $ do "$ 2.899"
                     H.div ! A.class_ "product-container" $ do
                         H.img ! A.src "images/product.png" ! A.alt "Product"
                         H.div ! A.class_ "category-product-details" $ do
-                            H.h2 $ H.a ! A.href "/" $ "Product"
+                            H.h2 $ H.a ! A.href "/product" $ "Product"
                             H.p $ do "$ 2.899"
                     H.div ! A.class_ "product-container" $ do
                         H.img ! A.src "images/product.png" ! A.alt "Product"
                         H.div ! A.class_ "category-product-details" $ do
-                            H.h2 $ H.a ! A.href "/" $ "Product"
+                            H.h2 $ H.a ! A.href "/product" $ "Product"
                             H.p $ do "$ 2.899"
                     H.div ! A.class_ "product-container" $ do
                         H.img ! A.src "images/product.png" ! A.alt "Product"
                         H.div ! A.class_ "category-product-details" $ do
-                            H.h2 $ H.a ! A.href "/" $ "Product"
+                            H.h2 $ H.a ! A.href "/product" $ "Product"
                             H.p $ do "$ 2.899"
                     H.div ! A.class_ "product-container" $ do
                         H.img ! A.src "images/product.png" ! A.alt "Product"
                         H.div ! A.class_ "category-product-details" $ do
-                            H.h2 $ H.a ! A.href "/" $ "Product"
+                            H.h2 $ H.a ! A.href "/product" $ "Product"
                             H.p $ do "$ 2.899"
                     H.div ! A.class_ "product-container" $ do
                         H.img ! A.src "images/product.png" ! A.alt "Product"
                         H.div ! A.class_ "category-product-details" $ do
-                            H.h2 $ H.a ! A.href "/" $ "Product"
+                            H.h2 $ H.a ! A.href "/product" $ "Product"
                             H.p $ do "$ 2.899"
                     H.div ! A.class_ "product-container" $ do
                         H.img ! A.src "images/product.png" ! A.alt "Product"
                         H.div ! A.class_ "category-product-details" $ do
-                            H.h2 $ H.a ! A.href "/" $ "Product"
+                            H.h2 $ H.a ! A.href "/product" $ "Product"
                             H.p $ do "$ 2.899"
                     H.div ! A.class_ "product-container" $ do
                         H.img ! A.src "images/product.png" ! A.alt "Product"
                         H.div ! A.class_ "category-product-details" $ do
-                            H.h2 $ H.a ! A.href "/" $ "Product"
+                            H.h2 $ H.a ! A.href "/product" $ "Product"
                             H.p $ do "$ 2.899"
                     

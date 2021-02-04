@@ -132,9 +132,9 @@ view acid =
              notFound $ template "no such product" [] $
                do "Could not find a product with id "
                   H.toHtml (unProductId pid)
-         (Just p) ->
-             ok $ template (name p) [] $ do
-                 (productHtml p)
+         --(Just p) ->
+         --    ok $ template (name p) [] $ do
+         --        (viewProduct p)
 
 
 
