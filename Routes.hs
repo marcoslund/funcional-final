@@ -9,6 +9,7 @@ import Views.Home
 import Views.Categories
 import Views.Category
 import Views.Product
+import Views.Checkout
 import Views.Edit
 
 import Control.Monad        (msum)
@@ -27,6 +28,7 @@ route acid =
             , dir "categories"          $ viewCategories acid
             , dir "category"            $ viewCategory acid
             , dir "product"             $ viewProduct acid
+            , dir "checkout"            $ viewCheckout acid
             , dir "images"              $ serveDirectory DisableBrowsing ["index.html"] "images"
             , dir "fonts"               $ serveDirectory DisableBrowsing ["index.html"] "fonts"
             , nullDir                   >> home acid
