@@ -64,6 +64,24 @@ $(deriveSafeCopy 0 'base ''CategoryName)
 
 ------------------------------------------------
 
+newtype UserId = UserId { unUserId :: Integer }
+    deriving (Eq, Ord, Data, Typeable)
+$(deriveSafeCopy 0 'base ''UserId)
+
+------------------------------------------------
+
+newtype Email = Email Text
+    deriving (Eq, Ord, Data, Typeable)
+$(deriveSafeCopy 0 'base ''Email)
+
+------------------------------------------------
+
+newtype UserName = UserName Text
+    deriving (Eq, Ord, Data, Typeable)
+$(deriveSafeCopy 0 'base ''UserName)
+
+------------------------------------------------
+
 data Product = Product
     { productId  :: ProductId
     , name   :: Text
@@ -94,8 +112,8 @@ instance Indexable Product where
 ------------------------------------------------
 
 data Category = Category
-    { categoryId :: CategoryId
-    , categoryName :: CategoryName
+    { categoryId   :: CategoryId
+    , categoryName :: Text
     }
     deriving (Eq, Ord, Data, Typeable)
 
@@ -109,11 +127,31 @@ instance Indexable Category where
 
 ------------------------------------------------
 
+data User = User
+    { userId    :: UserId
+    , email     :: Text
+    , username  :: Text
+    }
+    deriving (Eq, Ord, Data, Typeable)
+    
+$(deriveSafeCopy 0 'base ''User)
+
+instance Indexable User where
+  empty = ixSet
+    [ ixFun $ \bp -> [ userId bp ]
+    , ixFun $ \bp -> [ Email  $ email bp  ]
+    , ixFun $ \bp -> [ UserName $ username bp ]
+    ]
+
+------------------------------------------------
+
 data Store = Store
-    { nextProductId :: ProductId
-    , products      :: IxSet Product
+    { nextProductId  :: ProductId
+    , products       :: IxSet Product
     , nextCategoryId :: CategoryId
-    , categories    :: IxSet Category
+    , categories     :: IxSet Category
+    , nextUserId     :: UserId
+    , users          :: IxSet User
     }
     deriving (Data, Typeable)
 

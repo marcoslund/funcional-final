@@ -17,10 +17,12 @@ import Data.Time            (UTCTime(..))
 
 initialStoreState :: Store
 initialStoreState =
-    Store { nextProductId = ProductId 1
-          , products      = empty
+    Store { nextProductId  = ProductId 1
+          , products       = empty
           , nextCategoryId = CategoryId 1
-          , categories    = empty
+          , categories     = empty
+          , nextUserId     = UserId 1
+          , users          = empty
           }
 
 
