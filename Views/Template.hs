@@ -30,7 +30,8 @@ template title headers body =
            H.img ! A.src "images/logo.png" ! A.alt "Logo" ! A.class_ "logo"
          H.li ! A.class_ "navbar-link" $ H.a ! A.href "/categories" $ "Categories"
          H.li ! A.class_ "navbar-link" $ H.a ! A.href "/checkout" $ "Checkout"
-         --H.li $ H.form ! A.enctype "multipart/form-data"
-         --              ! A.method "POST"
-         --              ! A.action "/new" $ H.button $ "new product"
+         --H.li ! A.class_ "navbar-link" $ H.a ! A.href "/edit" $ "Upload Product"
+         H.li $ H.form ! A.enctype "multipart/form-data"
+                       ! A.method "POST"
+                       ! A.action "/new" $ H.button $ "Upload Product"
         body

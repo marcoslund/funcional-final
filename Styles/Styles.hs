@@ -26,6 +26,7 @@ css =
       , "a { text-decoration: none; color: inherit; }"
       , "h1 { font-size: 1.5em; color: #555; margin: 0; }"
       , "p { margin: 0; }"
+      , "textarea { vertical-align: top; }"
       , ".name { color: #aaa; }"
       , ".date { color: #aaa; }"
       , ".tags { color: #aaa; }"
@@ -97,5 +98,9 @@ css =
       , ".purchase-btn-container button { width: 40%; }"
       , ".confirm-button { background-color: #52948b; color: white; }"
       , ".confirm-button:hover { background-color: #396761; }"
+      , ".upload-product-form { margin: 30px; display: flex; flex-flow: column; }"
+      , ".upload-product-form label { width: 10em; }"
+      , ".form-item { padding: 10px 0; }"
+      , ".upload-product-btn-container { margin-top: 20px; }"
       ]
  in H.style ! A.type_ "text/css" $ H.toHtml s

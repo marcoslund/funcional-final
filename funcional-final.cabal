@@ -29,6 +29,7 @@ executable funcional-final
                        Views.Category
                        Views.Product
                        Views.Checkout
+                       Views.UploadProduct
                        Views.Edit
   -- other-extensions:
   build-depends:       base >=4.13 && <4.14,

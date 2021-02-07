@@ -10,6 +10,7 @@ import Views.Categories
 import Views.Category
 import Views.Product
 import Views.Checkout
+import Views.UploadProduct
 import Views.Edit
 
 import Control.Monad        (msum)
@@ -21,7 +22,7 @@ route :: AcidState Store -> ServerPart Response
 route acid =
     do decodeBody (defaultBodyPolicy "/tmp/" 0 1000000 1000000)
        msum [ dir "favicon.ico"         $ notFound (toResponse ())
-            , dir "edit"                $ edit acid
+            --, dir "edit"                $ edit acid
             , dir "new"                 $ new acid
             , dir "view"                $ view acid
             , dir "drafts"              $ drafts acid
@@ -29,6 +30,8 @@ route acid =
             , dir "category"            $ viewCategory acid
             , dir "product"             $ viewProduct acid
             , dir "checkout"            $ viewCheckout acid
+            , dir "edit"                $ viewUploadProduct acid
+            , dir "new"                 $ createProduct acid
             , dir "images"              $ serveDirectory DisableBrowsing ["index.html"] "images"
             , dir "fonts"               $ serveDirectory DisableBrowsing ["index.html"] "fonts"
             , nullDir                   >> home acid
