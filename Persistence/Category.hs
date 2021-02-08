@@ -26,6 +26,22 @@ newCategory =
                }
        return cat
 
+buildCategories :: Update Store Category
+buildCategories =
+    do b@Store{..} <- get
+       let cat1 = Category { categoryId    = CategoryId 1
+                            , categoryName = "Uno"
+                            }
+           cat2 = Category { categoryId   = CategoryId 2
+                           , categoryName = "Dos"
+                           }
+           categs = IxSet.insert cat2 (IxSet.insert cat1 categories)
+       put $ b { categories     = categs
+               , nextCategoryId = iterate succ nextCategoryId !! 2
+               }
+       return cat2
+
+appendCategory categories category = categories ++ category
 
 categoryById :: CategoryId -> Query Store (Maybe Category)
 categoryById cid =
