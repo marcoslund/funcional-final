@@ -22,6 +22,8 @@ executable funcional-final
   other-modules:       Routes
                        Models.Store
                        Persistence.Product
+                       Persistence.Category
+                       Persistence.User
                        Styles.Styles
                        Views.Template
                        Views.Home

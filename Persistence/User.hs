@@ -22,10 +22,8 @@ newUser =
                       , email = Text.empty
                       , username = Text.empty
                       }
-       put $ b { nextProductId  = nextProductId
-               , products       = products
-               , nextCategoryId = nextCategoryId
-               , nextUserId     = succ nextUserId
+       put $ b { users      = IxSet.insert usr users
+               , nextUserId = succ nextUserId
                }
        return usr
 
@@ -35,12 +33,12 @@ userById uid =
      do Store{..} <- ask
         return $ getOne $ users @= uid
 
-usersByEmailAsc :: String -> Query Store [User]
-usersByEmailAsc text = do
+userByEmailAsc :: String -> Query Store [User]
+userByEmailAsc email = do
  Store{..} <- ask
  let users' =
         IxSet.toAscList (Proxy :: Proxy Email) $
-         users @= Text.pack text
+         users @= Text.pack email
  return users'
 
 $(makeAcidic ''Store

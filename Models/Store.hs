@@ -71,7 +71,7 @@ $(deriveSafeCopy 0 'base ''CategoryName)
 ------------------------------------------------
 
 newtype UserId = UserId { unUserId :: Integer }
-    deriving (Eq, Ord, Data, Typeable)
+    deriving (Eq, Ord, Data, Enum, Typeable)
 $(deriveSafeCopy 0 'base ''UserId)
 
 ------------------------------------------------

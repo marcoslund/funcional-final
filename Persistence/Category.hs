@@ -18,11 +18,10 @@ import Data.Time            (UTCTime(..))
 newCategory :: Update Store Category
 newCategory =
     do b@Store{..} <- get
-       let cat = Category { categoryId = nextCategoryId
-                          , name       = Text.empty
+       let cat = Category { categoryId   = nextCategoryId
+                          , categoryName = Text.empty
                           }
-       put $ b { nextProductId  = nextProductId
-               , products       = products
+       put $ b { categories     = IxSet.insert cat categories
                , nextCategoryId = succ nextCategoryId
                }
        return cat
