@@ -19,10 +19,10 @@ newCategory :: Update Store Category
 newCategory =
     do b@Store{..} <- get
        let cat = Category { categoryId = nextCategoryId
-                          , name = Text.empty
+                          , name       = Text.empty
                           }
-       put $ b { nextProductId = nextProductId
-               , products      = products
+       put $ b { nextProductId  = nextProductId
+               , products       = products
                , nextCategoryId = succ nextCategoryId
                }
        return cat

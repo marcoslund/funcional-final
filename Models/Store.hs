@@ -106,15 +106,15 @@ $(deriveSafeCopy 0 'base ''Product)
 
 instance Indexable Product where
   empty = ixSet
-    [ ixFun $ \bp -> [ productId bp ]
-    , ixFun $ \bp -> [ Name  $ name bp  ]
-    , ixFun $ \bp -> [ Brand $ brand bp ]
-    , ixFun $ \bp -> [ status bp ]
+    [ ixFun $ \pr -> [ productId pr ]
+    , ixFun $ \pr -> [ Name  $ name pr  ]
+    , ixFun $ \pr -> [ Brand $ brand pr ]
+    , ixFun $ \pr -> [ status pr ]
     -- , ixFun $ \bp -> map Tag (tags bp)
     , ixFun $ (:[]) . date  -- point-free, just for variety
-    , ixFun $ \bp -> [ Price $ price bp ]
+    , ixFun $ \pr -> [ Price $ price pr ]
     -- , ixFun $ \bp -> [ WordCount (length $ Text.words $ body bp) ]
-    , ixFun $ \bp -> [ Stock $ stock bp ]
+    , ixFun $ \pr -> [ Stock $ stock pr ]
     ]
 
 ------------------------------------------------
@@ -129,8 +129,8 @@ $(deriveSafeCopy 0 'base ''Category)
 
 instance Indexable Category where
   empty = ixSet
-    [ ixFun $ \bp -> [ categoryId bp ]
-    , ixFun $ \bp -> [ CategoryName $ categoryName bp ]
+    [ ixFun $ \cg -> [ categoryId cg ]
+    , ixFun $ \cg -> [ CategoryName $ categoryName cg ]
     ]
 
 ------------------------------------------------
@@ -146,9 +146,9 @@ $(deriveSafeCopy 0 'base ''User)
 
 instance Indexable User where
   empty = ixSet
-    [ ixFun $ \bp -> [ userId bp ]
-    , ixFun $ \bp -> [ Email  $ email bp  ]
-    , ixFun $ \bp -> [ UserName $ username bp ]
+    [ ixFun $ \us -> [ userId us ]
+    , ixFun $ \us -> [ Email  $ email us  ]
+    , ixFun $ \us -> [ UserName $ username us ]
     ]
 
 ------------------------------------------------

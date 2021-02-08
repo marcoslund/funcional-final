@@ -91,6 +91,22 @@ productsByNameAsc text = do
          products @= Text.pack text
  return products'
 
+productsByCategoryId :: CategoryId -> Query Store [Product]
+productsByCategoryId categoryId = do
+ Store{..} <- ask
+ let products' =
+        IxSet.toAscList (Proxy :: Proxy CategoryId) $
+         products @= categoryId
+ return products'
+
+productsByCategory :: Category -> Query Store [Product]
+productsByCategory category = do
+ Store{..} <- ask
+ let products' =
+        IxSet.toAscList (Proxy :: Proxy CategoryId) $
+         products @= categoryId category
+ return products'
+
 $(makeAcidic ''Store
   [ 'newProduct
   , 'updateProduct
@@ -99,4 +115,6 @@ $(makeAcidic ''Store
   , 'productsByPriceAsc
   , 'productsByPriceDesc
   , 'productsByNameAsc
+  , 'productsByCategoryId
+  , 'productsByCategory
   ])
