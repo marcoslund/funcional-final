@@ -55,7 +55,10 @@ viewUploadProduct acid = do
                             ! A.value (H.toValue brand)
                 H.div ! A.class_ "form-item" $ do
                     H.label "Category" ! A.for "category"
-                    --H.select ! A.id "category" $ [("1", "Opcion")]
+                    H.select $ do --H.select ! A.id "category" $ [("1", "Opcion")]
+                        H.option $ H.span $ "Food Market"
+                        H.option $ H.span $ "Electronics"
+                        H.option $ H.span $ "Clothing"
                 H.div ! A.class_ "form-item" $ do
                     H.label "Price" ! A.for "price"
                     H.input ! A.type_ "number"
