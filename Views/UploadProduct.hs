@@ -14,6 +14,7 @@ import Control.Monad.Trans  (liftIO)
 import Data.Acid            (AcidState)
 import Data.Acid.Advanced   (update', query')
 import Data.Text.Lazy       (toStrict)
+import Data.Text            (unpack)
 import Data.Time            (getCurrentTime)
 import Happstack.Server     ( ServerPart, Method(POST, GET), Response, lookRead, lookText, method, notFound, ok, seeOther, toResponse)
 import           Text.Blaze.Html ((!), Html)
@@ -81,7 +82,7 @@ viewUploadProduct acid = do
                    , brand = productBrand
                    , description = productDesc
                    , date = now
-                   , price = 1 --productPrice
+                   , price = read (unpack productPrice)
                    }
          update' acid (UpdateProduct updatedProduct)
          seeOther ("/product?id=" ++ (show $ unProductId pid)) (toResponse ())

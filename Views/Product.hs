@@ -34,7 +34,8 @@ viewProduct acid = do
                         H.h2 ! A.class_ "product-name" $ H.toHtml name
                         H.div ! A.class_ "detail-container" $ do
                            H.p ! A.class_ "detail-title" $ do "Price:"
-                           H.p ! A.class_ "detail-price" $ do "$ 2.899"
+                           H.p ! A.class_ "detail-price" $ do "$"
+                           H.p ! A.class_ "detail-price" $ do H.toHtml price
                         H.div ! A.class_ "detail-container" $ do
                            H.p ! A.class_ "detail-title" $ do "In stock:"
                            H.p $ do "3"
