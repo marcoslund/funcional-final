@@ -52,6 +52,12 @@ $(deriveSafeCopy 0 'base ''Price)
 
 ------------------------------------------------
 
+newtype Stock = Stock Int
+    deriving (Eq, Ord, Data, Typeable)
+$(deriveSafeCopy 0 'base ''Stock)
+
+------------------------------------------------
+
 newtype CategoryId = CategoryId { unCategoryId :: Integer }
     deriving (Eq, Ord, Data, Enum, Typeable)
 $(deriveSafeCopy 0 'base ''CategoryId)
@@ -83,14 +89,15 @@ $(deriveSafeCopy 0 'base ''UserName)
 ------------------------------------------------
 
 data Product = Product
-    { productId  :: ProductId
-    , name   :: Text
-    , brand  :: Text
-    , description    :: Text
-    , date    :: UTCTime
-    , status  :: Status
-    , price   :: Int
-    , category :: CategoryId
+    { productId   :: ProductId
+    , name        :: Text
+    , brand       :: Text
+    , description :: Text
+    , date        :: UTCTime
+    , status      :: Status
+    , price       :: Int
+    , category    :: CategoryId
+    , stock       :: Int
     --, tags    :: [Text]
     }
     deriving (Eq, Ord, Data, Typeable)
@@ -107,6 +114,7 @@ instance Indexable Product where
     , ixFun $ (:[]) . date  -- point-free, just for variety
     , ixFun $ \bp -> [ Price $ price bp ]
     -- , ixFun $ \bp -> [ WordCount (length $ Text.words $ body bp) ]
+    , ixFun $ \bp -> [ Stock $ stock bp ]
     ]
 
 ------------------------------------------------
@@ -122,7 +130,7 @@ $(deriveSafeCopy 0 'base ''Category)
 instance Indexable Category where
   empty = ixSet
     [ ixFun $ \bp -> [ categoryId bp ]
-    --, ixFun $ \bp -> [ CategoryName $ categoryName bp ]
+    , ixFun $ \bp -> [ CategoryName $ categoryName bp ]
     ]
 
 ------------------------------------------------

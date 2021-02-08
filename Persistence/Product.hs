@@ -37,6 +37,7 @@ newProduct pubDate =
                            , status = Draft
                            , price = 0
                            , category = nextCategoryId
+                           , stock = 100
                            -- , tags   = []
                            }
        put $ b { nextProductId = succ nextProductId
