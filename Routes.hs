@@ -27,7 +27,7 @@ route acid =
             , dir "view"                $ view acid
             , dir "drafts"              $ drafts acid
             , dir "categories"          $ viewCategories acid
-            , dir "category"            $ viewCategory acid
+            , dir "products"            $ viewCategory acid
             , dir "product"             $ viewProduct acid
             , dir "checkout"            $ viewCheckout acid
             , dir "edit"                $ viewUploadProduct acid

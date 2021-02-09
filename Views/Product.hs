@@ -5,6 +5,7 @@
 module Views.Product (viewProduct) where
 
 import Models.Store
+import Persistence.Initializer
 import Persistence.Product
 import Views.Template
 

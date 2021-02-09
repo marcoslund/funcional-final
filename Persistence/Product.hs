@@ -105,15 +105,3 @@ productsByCategory category = do
         IxSet.toAscList (Proxy :: Proxy CategoryId) $
          products @= categoryId category
  return products'
-
-$(makeAcidic ''Store
-  [ 'createProduct
-  , 'updateProduct
-  , 'productById
-  , 'productsByStatus
-  , 'productsByPriceAsc
-  , 'productsByPriceDesc
-  , 'productsByNameAsc
-  , 'productsByCategoryId
-  , 'productsByCategory
-  ])

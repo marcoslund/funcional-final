@@ -30,10 +30,28 @@ buildCategories :: Update Store [Category]
 buildCategories =
     do b@Store{..} <- get
        let newCategs = [ Category { categoryId   = CategoryId 1
-                                  , categoryName = "Uno"
+                                  , categoryName = "Food Market"
                                   }
                        , Category { categoryId   = CategoryId 2
-                                  , categoryName = "Dos"
+                                  , categoryName = "Electronics"
+                                  }
+                       , Category { categoryId   = CategoryId 3
+                                  , categoryName = "Clothing"
+                                  }
+                       , Category { categoryId   = CategoryId 4
+                                  , categoryName = "Furniture"
+                                  }
+                       , Category { categoryId   = CategoryId 5
+                                  , categoryName = "Vehicles"
+                                  }
+                       , Category { categoryId   = CategoryId 6
+                                  , categoryName = "Hardware & Tools"
+                                  }
+                       , Category { categoryId   = CategoryId 7
+                                  , categoryName = "Books"
+                                  }
+                       , Category { categoryId   = CategoryId 8
+                                  , categoryName = "Beauty & Makeup"
                                   }
                        ]
        put $ b { categories     = insertN categories newCategs
@@ -57,6 +75,12 @@ categoryById cid =
      do Store{..} <- ask
         return $ getOne $ categories @= cid
 
+getCategories :: Query Store [Category]
+getCategories = do
+ Store{..} <- ask
+ let categs' = IxSet.toAscList (Proxy :: Proxy CategoryId) $ categories
+ return categs'
+
 categoriesByNameAsc :: String -> Query Store [Category]
 categoriesByNameAsc text = do
  Store{..} <- ask
@@ -64,9 +88,3 @@ categoriesByNameAsc text = do
         IxSet.toAscList (Proxy :: Proxy CategoryName) $
          categories @= Text.pack text
  return categs'
-
-$(makeAcidic ''Store
-  [ 'newCategory
-  , 'categoryById
-  , 'categoriesByNameAsc
-  ])

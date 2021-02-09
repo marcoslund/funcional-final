@@ -21,6 +21,7 @@ executable funcional-final
   main-is:             Main.hs
   other-modules:       Routes
                        Models.Store
+                       Persistence.Initializer
                        Persistence.Product
                        Persistence.Category
                        Persistence.User

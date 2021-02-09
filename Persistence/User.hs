@@ -40,9 +40,3 @@ userByEmailAsc email = do
         IxSet.toAscList (Proxy :: Proxy Email) $
          users @= Text.pack email
  return users'
-
-$(makeAcidic ''Store
-  [ 'newUser
-  , 'userById
-  , 'userByEmailAsc
-  ])
