@@ -37,11 +37,18 @@ buildCategories =
                            }
            categs = IxSet.insert cat2 (IxSet.insert cat1 categories)
        put $ b { categories     = categs
-               , nextCategoryId = iterate succ nextCategoryId !! 2
+               , nextCategoryId = incrementCategoryId nextCategoryId 2
                }
        return cat2
 
 appendCategory categories category = categories ++ category
+
+insertN :: IxSet.IxSet Category -> [Category] -> IxSet.IxSet Category
+insertN cset [] = cset
+insertN cset (c:cs) = insertN (IxSet.insert c cset) cs
+
+incrementCategoryId :: CategoryId -> Int -> CategoryId
+incrementCategoryId id times = iterate succ id !! times
 
 categoryById :: CategoryId -> Query Store (Maybe Category)
 categoryById cid =
