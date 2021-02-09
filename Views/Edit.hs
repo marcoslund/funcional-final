@@ -2,7 +2,7 @@
     RecordWildCards, TemplateHaskell, TypeFamilies,
     OverloadedStrings #-}
 
-module Views.Edit (edit, new, view, drafts) where
+module Views.Edit (edit, view, drafts) where
 
 import Models.Store
 import Persistence.Product
@@ -108,17 +108,6 @@ edit acid = do
                   ]
 
       where lookText' = fmap toStrict . lookText
-
-
--- | create a new product in the database,
---   and then redirect to /edit
-new :: AcidState Store -> ServerPart Response
-new acid = do
-  method POST
-  now <- liftIO $ getCurrentTime
-  prod <- update' acid (NewProduct now)
-  let url = "/edit?id=" ++ show (unProductId $ productId prod)
-  seeOther url (toResponse ())
 
 
 

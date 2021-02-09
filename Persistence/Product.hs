@@ -26,19 +26,18 @@ initialStoreState =
           }
 
 
-newProduct :: UTCTime -> Update Store Product
-newProduct pubDate =
+createProduct :: NewProduct -> UTCTime -> Update Store Product
+createProduct newProduct pubDate =
     do b@Store{..} <- get
        let prod = Product { productId = nextProductId
-                           , name = Text.empty
-                           , brand = Text.empty
-                           , description = Text.empty
-                           , date   = pubDate
+                           , name = newProdName newProduct
+                           , brand = newProdBrand newProduct
+                           , description = newProdDesc newProduct
+                           , date   = newProdDate newProduct
                            , status = Draft
-                           , price = 0
+                           , price = newProdPrice newProduct
                            , category = nextCategoryId
-                           , stock = 100
-                           -- , tags   = []
+                           , stock = newProdStock newProduct
                            }
        put $ b { nextProductId = succ nextProductId
                , products      = IxSet.insert prod products
@@ -108,7 +107,7 @@ productsByCategory category = do
  return products'
 
 $(makeAcidic ''Store
-  [ 'newProduct
+  [ 'createProduct
   , 'updateProduct
   , 'productById
   , 'productsByStatus

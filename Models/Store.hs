@@ -88,6 +88,20 @@ $(deriveSafeCopy 0 'base ''UserName)
 
 ------------------------------------------------
 
+data NewProduct = NewProduct
+    { newProdName        :: Text
+    , newProdBrand       :: Text
+    , newProdDesc        :: Text
+    , newProdDate        :: UTCTime
+    , newProdPrice       :: Int
+    , newProdStock       :: Int
+    }
+    deriving (Eq, Ord, Data, Typeable)
+    
+$(deriveSafeCopy 0 'base ''NewProduct)
+
+------------------------------------------------
+
 data Product = Product
     { productId   :: ProductId
     , name        :: Text

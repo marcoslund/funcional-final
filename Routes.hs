@@ -23,7 +23,7 @@ route acid =
     do decodeBody (defaultBodyPolicy "/tmp/" 0 1000000 1000000)
        msum [ dir "favicon.ico"         $ notFound (toResponse ())
             --, dir "edit"                $ edit acid
-            , dir "new"                 $ new acid
+            --, dir "new"                 $ new acid
             , dir "view"                $ view acid
             , dir "drafts"              $ drafts acid
             , dir "categories"          $ viewCategories acid
@@ -31,7 +31,7 @@ route acid =
             , dir "product"             $ viewProduct acid
             , dir "checkout"            $ viewCheckout acid
             , dir "edit"                $ viewUploadProduct acid
-            , dir "new"                 $ createProduct acid
+            , dir "new"                 $ viewNewProduct acid
             , dir "images"              $ serveDirectory DisableBrowsing ["index.html"] "images"
             , dir "fonts"               $ serveDirectory DisableBrowsing ["index.html"] "fonts"
             , nullDir                   >> home acid

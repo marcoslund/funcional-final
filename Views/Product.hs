@@ -38,7 +38,7 @@ viewProduct acid = do
                            H.p ! A.class_ "detail-price" $ do H.toHtml price
                         H.div ! A.class_ "detail-container" $ do
                            H.p ! A.class_ "detail-title" $ do "In stock:"
-                           H.p $ do "3"
+                           H.p $ do H.toHtml stock
                            H.p ! A.class_ "white-space-pre" $ do " units"
                         H.div ! A.class_ "detail-container" $ do
                            H.p ! A.class_ "detail-title" $ do "Brand:"
