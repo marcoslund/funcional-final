@@ -26,22 +26,20 @@ newCategory =
                }
        return cat
 
-buildCategories :: Update Store Category
+buildCategories :: Update Store [Category]
 buildCategories =
     do b@Store{..} <- get
-       let cat1 = Category { categoryId    = CategoryId 1
-                            , categoryName = "Uno"
-                            }
-           cat2 = Category { categoryId   = CategoryId 2
-                           , categoryName = "Dos"
-                           }
-           categs = IxSet.insert cat2 (IxSet.insert cat1 categories)
-       put $ b { categories     = categs
-               , nextCategoryId = incrementCategoryId nextCategoryId 2
+       let newCategs = [ Category { categoryId   = CategoryId 1
+                                  , categoryName = "Uno"
+                                  }
+                       , Category { categoryId   = CategoryId 2
+                                  , categoryName = "Dos"
+                                  }
+                       ]
+       put $ b { categories     = insertN categories newCategs
+               , nextCategoryId = incrementCategoryId nextCategoryId $ ownLength newCategs
                }
-       return cat2
-
-appendCategory categories category = categories ++ category
+       return newCategs
 
 insertN :: IxSet.IxSet Category -> [Category] -> IxSet.IxSet Category
 insertN cset [] = cset
@@ -49,6 +47,10 @@ insertN cset (c:cs) = insertN (IxSet.insert c cset) cs
 
 incrementCategoryId :: CategoryId -> Int -> CategoryId
 incrementCategoryId id times = iterate succ id !! times
+
+ownLength :: [a] -> Int
+ownLength [] = 0
+ownLength (_:xs) = 1 + ownLength xs
 
 categoryById :: CategoryId -> Query Store (Maybe Category)
 categoryById cid =
