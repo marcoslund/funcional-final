@@ -47,10 +47,10 @@ viewNewProduct acid = do
                             ! A.size "40"
                 H.div ! A.class_ "form-item" $ do
                     H.label "Category" ! A.for "category"
-                    H.select $ do --H.select ! A.id "category" $ [("1", "Opcion")]
-                        H.option $ H.span $ "Food Market"
-                        H.option $ H.span $ "Electronics"
-                        H.option $ H.span $ "Clothing"
+                    H.select ! A.id "category" ! A.name "category" $ do
+                        H.option ! A.value "1" $ "Food Market"
+                        H.option ! A.value "2" $ "Electronics"
+                        H.option ! A.value "3" $ "Clothing"
                 H.div ! A.class_ "form-item" $ do
                     H.label "Price" ! A.for "price"
                     H.input ! A.type_ "number"
@@ -76,6 +76,7 @@ viewNewProduct acid = do
          productBrand   <- lookText' "brand"
          productDesc    <- lookText' "description"
          now            <- liftIO $ getCurrentTime
+         productCateg   <- lookText' "category"
          productPrice   <- lookText' "price"
          productStock   <- lookText' "stock"
 
@@ -84,6 +85,7 @@ viewNewProduct acid = do
                    , newProdBrand = productBrand
                    , newProdDesc = productDesc
                    , newProdDate = now
+                   , newProdCategId = read (unpack productCateg)
                    , newProdPrice = read (unpack productPrice)
                    , newProdStock = read (unpack productStock)
                    }

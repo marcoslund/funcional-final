@@ -27,7 +27,7 @@ viewCategories acid =
                             H.div ! A.class_ "container" $ do
                                 H.h1 ! A.class_ "title" $ "Categories"
                                 H.div ! A.class_ "items-container" $ do
-                                    H.div $ mapM_ viewCategoryContainer newCategs
+                                    mapM_ viewCategoryContainer newCategs
             _  -> ok $ template "Categories" [] $ do
                             H.div ! A.class_ "container" $ do
                                 H.h1 ! A.class_ "title" $ "Categories"

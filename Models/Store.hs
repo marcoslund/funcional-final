@@ -93,6 +93,7 @@ data NewProduct = NewProduct
     , newProdBrand       :: Text
     , newProdDesc        :: Text
     , newProdDate        :: UTCTime
+    , newProdCategId     :: Int
     , newProdPrice       :: Int
     , newProdStock       :: Int
     }
