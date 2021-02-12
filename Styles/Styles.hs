@@ -61,6 +61,7 @@ css =
       , ".category-product-details a { color: #0F1111; }"
       , ".category-product-details a:hover { color: #C7511F; }"
       , ".category-product-details p { color: black; margin: 0; font-size: 1.25em; }"
+      , ".category-product-price { display: flex; }"
       , ".profile-container { margin: 20px; display: flex; }"
       , ".product-image { width: 600px; height: 600px; }"
       , ".product-details { display: flex; flex-flow: column; width: 100%; margin: 20px; color: #0F1111; font-size: 1.25em; }"

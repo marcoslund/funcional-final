@@ -26,6 +26,7 @@ viewNewProduct  :: AcidState Store -> ServerPart Response
 viewNewProduct acid = do 
   msum
     [ do method GET
+         categories <- query' acid GetCategories
          ok $ template "Upload Product" [] $ do
           H.div ! A.class_ "container" $ do
             H.h1 ! A.class_ "title" $ "Upload Product"
@@ -48,9 +49,7 @@ viewNewProduct acid = do
                 H.div ! A.class_ "form-item" $ do
                     H.label "Category" ! A.for "category"
                     H.select ! A.id "category" ! A.name "category" $ do
-                        H.option ! A.value "1" $ "Food Market"
-                        H.option ! A.value "2" $ "Electronics"
-                        H.option ! A.value "3" $ "Clothing"
+                        mapM_ viewCategoryOption categories
                 H.div ! A.class_ "form-item" $ do
                     H.label "Price" ! A.for "price"
                     H.input ! A.type_ "number"
@@ -94,6 +93,9 @@ viewNewProduct acid = do
                   ]
 
       where lookText' = fmap toStrict . lookText
+            viewCategoryOption Category{..} = 
+                let categId = H.toValue $ show (unCategoryId categoryId)
+                in H.option ! A.value categId $ H.toHtml categoryName
 
 viewUploadProduct  :: AcidState Store -> ServerPart Response
 viewUploadProduct acid = do

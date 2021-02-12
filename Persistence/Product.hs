@@ -36,7 +36,7 @@ createProduct newProduct pubDate =
                            , date   = newProdDate newProduct
                            , status = Draft
                            , price = newProdPrice newProduct
-                           , category = nextCategoryId
+                           , category = CategoryId (toInteger (newProdCategId newProduct))
                            , stock = newProdStock newProduct
                            }
        put $ b { nextProductId = succ nextProductId

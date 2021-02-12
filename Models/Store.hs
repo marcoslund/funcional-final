@@ -127,6 +127,7 @@ instance Indexable Product where
     , ixFun $ \pr -> [ status pr ]
     -- , ixFun $ \bp -> map Tag (tags bp)
     , ixFun $ (:[]) . date  -- point-free, just for variety
+    , ixFun $ \pr -> [ category pr ]
     , ixFun $ \pr -> [ Price $ price pr ]
     -- , ixFun $ \bp -> [ WordCount (length $ Text.words $ body bp) ]
     , ixFun $ \pr -> [ Stock $ stock pr ]
