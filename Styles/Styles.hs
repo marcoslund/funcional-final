@@ -91,7 +91,7 @@ css =
       , ".shopping-cart-item-label img { height: 150px; margin-right: 20px; }"
       , ".shopping-cart-item-qty { width: 10%; text-align: center; }"
       , ".shopping-cart-item-price { width: 10%; text-align: right; font-weight: bold; }"
-      , ".payment-container { flex-basis: 30%; height: fit-content; background-color: #eee; margin: 20px; padding: 20px; }"
+      , ".payment-container { flex-basis: 30%; height: fit-content; background-color: #ddd; margin: 20px; padding: 20px; }"
       , ".payment-container h2 { margin: 0; padding-bottom: 10px; }"
       , ".payment-subtotal { display: flex; justify-content: space-between; padding: 5px 0; }"
       , ".payment-shipping { display: flex; justify-content: space-between; padding: 5px 0; }"

@@ -180,3 +180,9 @@ data Store = Store
     deriving (Data, Typeable)
 
 $(deriveSafeCopy 0 'base ''Store)
+
+------------------------------------------------
+
+newtype Mode     = Mode { unMode :: Text }
+    deriving (Eq, Ord, Data, Typeable)
+$(deriveSafeCopy 0 'base ''Mode)

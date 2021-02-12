@@ -17,7 +17,7 @@ import qualified Text.Blaze.Html4.Strict.Attributes as A
 
 viewCheckout  :: AcidState Store -> ServerPart Response
 viewCheckout acid =
-   ok $ template "Checkout" [] $ do
+   ok $ template "Checkout" [] (Mode "admin") $ do
        H.div ! A.class_ "container" $ do
             H.h1 ! A.class_ "title" $ "Checkout"
             H.div ! A.class_ "checkout-container" $ do
