@@ -31,8 +31,4 @@ template title headers body =
          H.li ! A.class_ "navbar-link" $ H.a ! A.href "/categories" $ "Categories"
          H.li ! A.class_ "navbar-link" $ H.a ! A.href "/checkout" $ "Checkout"
          H.li ! A.class_ "navbar-link" $ H.a ! A.href "/new" $ "Upload"
-         --H.li ! A.class_ "navbar-link" $ H.a ! A.href "/edit" $ "Edit Product"
-         --H.li ! A.class_ "navbar-link" $ H.form ! A.enctype "multipart/form-data"
-         --              ! A.method "POST"
-         --              ! A.action "/new" $ H.button $ "Upload Product"
         body
