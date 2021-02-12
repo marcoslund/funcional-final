@@ -88,6 +88,17 @@ $(deriveSafeCopy 0 'base ''UserName)
 
 ------------------------------------------------
 
+newtype CartProduct = CartProduct (ProductId, Int)
+    deriving (Eq, Ord, Data, Typeable)
+$(deriveSafeCopy 0 'base ''CartProduct)
+
+instance Indexable CartProduct where
+    empty = ixSet
+        [ ixFun $ \pair -> [ id pair ]
+        ]
+
+------------------------------------------------
+
 data NewProduct = NewProduct
     { newProdName        :: Text
     , newProdBrand       :: Text
@@ -169,6 +180,15 @@ instance Indexable User where
 
 ------------------------------------------------
 
+data Cart = Cart
+    { purchasedProducts :: IxSet CartProduct
+    }
+    deriving (Data, Typeable)
+
+$(deriveSafeCopy 0 'base ''Cart)
+
+------------------------------------------------
+
 data Store = Store
     { nextProductId  :: ProductId
     , products       :: IxSet Product
@@ -176,6 +196,7 @@ data Store = Store
     , categories     :: IxSet Category
     , nextUserId     :: UserId
     , users          :: IxSet User
+    , userCart       :: Cart
     }
     deriving (Data, Typeable)
 

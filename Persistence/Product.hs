@@ -23,6 +23,7 @@ initialStoreState =
           , categories     = empty
           , nextUserId     = UserId 1
           , users          = empty
+          , userCart       = Cart { purchasedProducts = empty }
           }
 
 
