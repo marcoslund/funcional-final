@@ -3,6 +3,7 @@
 module Persistence.Initializer where
 
 import Models.Store
+import Persistence.Cart
 import Persistence.Category
 import Persistence.Product
 import Persistence.User
@@ -27,4 +28,5 @@ $(makeAcidic ''Store
   , 'newUser
   , 'userById
   , 'userByEmailAsc
+  , 'appendProduct
   ])

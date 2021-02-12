@@ -2,15 +2,16 @@
     RecordWildCards, TemplateHaskell, TypeFamilies,
     OverloadedStrings #-}
 
-module Views.Checkout (viewCheckout) where
+module Views.Checkout (viewCheckout, addToCart) where
 
 import Models.Store
+import Persistence.Initializer
 import Persistence.Product
 import Views.Template
 
 import Data.Acid            (AcidState)
-import Data.Acid.Advanced   (query')
-import Happstack.Server     ( ServerPart, Response, ok)
+import Data.Acid.Advanced   (query', update')
+import Happstack.Server     ( ServerPart, Method(GET, POST), Response, ok, lookRead, method, seeOther, toResponse)
 import           Text.Blaze.Html ((!), Html)
 import qualified Text.Blaze.Html4.Strict as H
 import qualified Text.Blaze.Html4.Strict.Attributes as A
@@ -59,3 +60,12 @@ viewCheckout acid =
                         H.p $ do "$2.929"
                     H.div ! A.class_ "purchase-btn-container" $ do
                         H.button ! A.name "purchaseOrder" ! A.value "purchaseOrder" ! A.class_ "confirm-button" $ "Purchase"
+
+addToCart :: AcidState Store -> ServerPart Response
+addToCart acid = do
+  method POST
+  pid   <- ProductId <$> lookRead "id"
+  
+  update' acid (AppendProduct pid 1)
+  let url = "/product?id=" ++ show (unProductId $ pid)
+  seeOther url (toResponse ())

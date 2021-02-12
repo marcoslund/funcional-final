@@ -28,6 +28,7 @@ route acid =
             , dir "checkout"            $ viewCheckout acid
             , dir "edit"                $ viewEditProduct acid
             , dir "new"                 $ viewNewProduct acid
+            , dir "addToCart"           $ addToCart acid
             , dir "images"              $ serveDirectory DisableBrowsing ["index.html"] "images"
             , dir "fonts"               $ serveDirectory DisableBrowsing ["index.html"] "fonts"
             , nullDir                   >> home acid
