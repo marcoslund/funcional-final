@@ -2,7 +2,7 @@
     RecordWildCards, TemplateHaskell, TypeFamilies,
     OverloadedStrings #-}
 
-module Views.UploadProduct (viewUploadProduct, viewNewProduct) where
+module Views.UploadProduct (viewNewProduct) where
 
 import Models.Store
 import Persistence.Initializer
@@ -96,83 +96,3 @@ viewNewProduct acid = do
             viewCategoryOption Category{..} = 
                 let categId = H.toValue $ show (unCategoryId categoryId)
                 in H.option ! A.value categId $ H.toHtml categoryName
-
-viewUploadProduct  :: AcidState Store -> ServerPart Response
-viewUploadProduct acid = do
- pid   <- ProductId <$> lookRead "id"
- mProd <- query' acid (ProductById pid)
- case mProd of
-  Nothing ->
-   notFound $ template "Not found" [] $
-                do "Could not find a product with ID "
-                   H.toHtml (unProductId pid)
-  (Just p@(Product{..})) -> msum
-    [ do method GET
-         ok $ template "Upload Product" [] $ do
-          H.div ! A.class_ "container" $ do
-            H.h1 ! A.class_ "title" $ "Upload Product"
-            H.form  ! A.class_ "upload-product-form"
-                    ! A.enctype "multipart/form-data"
-                    ! A.method "POST"
-                    ! A.action (H.toValue $ "/edit?id=" ++ (show $ unProductId pid)) $ do
-                H.div ! A.class_ "form-item" $ do
-                    H.label "Product name" ! A.for "name"
-                    H.input ! A.type_ "text"
-                            ! A.name "name"
-                            ! A.id "name"
-                            ! A.size "80"
-                            ! A.value (H.toValue name)
-                H.div ! A.class_ "form-item" $ do
-                    H.label "Brand" ! A.for "brand"
-                    H.input ! A.type_ "text"
-                            ! A.name "brand"
-                            ! A.id "brand"
-                            ! A.size "40"
-                            ! A.value (H.toValue brand)
-                H.div ! A.class_ "form-item" $ do
-                    H.label "Category" ! A.for "category"
-                    H.select $ do --H.select ! A.id "category" $ [("1", "Opcion")]
-                        H.option $ H.span $ "Food Market"
-                        H.option $ H.span $ "Electronics"
-                        H.option $ H.span $ "Clothing"
-                H.div ! A.class_ "form-item" $ do
-                    H.label "Price" ! A.for "price"
-                    H.input ! A.type_ "number"
-                            ! A.name "price"
-                            ! A.id "price"
-                            ! A.size "20"
-                H.div ! A.class_ "form-item" $ do
-                    H.label "Description" ! A.for "description"
-                    H.textarea ! A.cols "80"
-                                ! A.rows "5"
-                                ! A.name "description" $ H.toHtml description
-                H.div ! A.class_ "upload-product-btn-container" $ do
-                    H.button ! A.name "upload" ! A.class_ "action-button"
-                            ! A.value "upload" $ "Upload"
-    , do method POST
-         productName    <- lookText' "name"
-         productBrand   <- lookText' "brand"
-         productDesc    <- lookText' "description"
-         now            <- liftIO $ getCurrentTime
-         productPrice   <- lookText' "price"
-
-         let updatedProduct =
-                 p { name = productName
-                   , brand = productBrand
-                   , description = productDesc
-                   , date = now
-                   , price = read (unpack productPrice)
-                   }
-         update' acid (UpdateProduct updatedProduct)
-         seeOther ("/product?id=" ++ (show $ unProductId pid)) (toResponse ())
-                  ]
-
-      where lookText' = fmap toStrict . lookText
-
---createProduct :: AcidState Store -> ServerPart Response
---createProduct acid = do
---  method POST
---  now <- liftIO $ getCurrentTime
---  prod <- update' acid (NewProduct now)
---  let url = "/edit?id=" ++ show (unProductId $ productId prod)
---  seeOther url (toResponse ())

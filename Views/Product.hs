@@ -28,7 +28,8 @@ viewProduct acid = do
       (Just p@(Product{..})) -> 
          do method GET
             ok $ template "Product" [] $ do
-               H.button ! A.class_ "back-btn" $ H.a ! A.href "/category" $ "Go back"
+               H.button ! A.class_ "back-btn" $ H.a ! A.href (H.toValue $ "/products?categoryId=" ++ show (unCategoryId category)) $ "Go back"
+               H.button ! A.class_ "back-btn" $ H.a ! A.href (H.toValue $ "/edit?id=" ++ show (unProductId pid)) $ "Edit"
                H.div ! A.class_ "profile-container" $ do
                   H.img ! A.src "images/product.png" ! A.alt "Product" ! A.class_ "product-image"
                   H.div ! A.class_ "product-details" $ do
