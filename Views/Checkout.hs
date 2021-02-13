@@ -2,7 +2,7 @@
     RecordWildCards, TemplateHaskell, TypeFamilies,
     OverloadedStrings #-}
 
-module Views.Checkout (viewCheckout, addToCart) where
+module Views.Checkout (viewCheckout, addToCart, purchase) where
 
 import Models.Store
 import Persistence.Initializer
@@ -26,6 +26,7 @@ logger = "Checkout"
 viewCheckout  :: AcidState Store -> ServerPart Response
 viewCheckout acid = do
     cartProds <- query' acid CartProducts
+    -- subtotal  <- calculateSubtotal cartProds
     ok $ template "Checkout" [] (Mode "user") $ do
        H.div ! A.class_ "container" $ do
             H.h1 ! A.class_ "title" $ "Checkout"
@@ -42,22 +43,24 @@ viewCheckout acid = do
                     H.h2 $ "Order Summary"
                     H.div ! A.class_ "payment-subtotal" $ do
                         H.p $ do "Subtotal"
-                        H.p $ do "$2.899"
+                        H.p $ do H.toHtml (calculateSubtotal cartProds)
                     H.div ! A.class_ "payment-shipping" $ do
                         H.p $ do "Shipping"
                         H.p $ do "$30"
                     H.div ! A.class_ "payment-total" $ do
                         H.p $ do "Estimated Total"
-                        H.p $ do "$2.929"
+                        H.p $ do H.toHtml ((calculateSubtotal cartProds) + 30)
                     H.div ! A.class_ "purchase-btn-container" $ do
-                        H.button ! A.name "purchaseOrder" ! A.value "purchaseOrder" ! A.class_ "confirm-button" $ "Purchase"
+                        H.form ! A.enctype "multipart/form-data"
+                                    ! A.method "POST"
+                                    ! A.action "/purchase" $ H.button ! A.name "purchaseOrder" ! A.value "purchaseOrder" ! A.class_ "confirm-button" $ "Purchase"
   where 
       viewCartProduct CartProduct{..} =
             let url = (H.toValue $ "/product?id=" ++ show (unProductId cartProdId) ++ "&mode=user")
             in H.div ! A.class_ "shopping-cart-item" $ do
                     H.div ! A.class_ "shopping-cart-item-label" $ do
                         H.img ! A.src "images/product.png" ! A.alt "Product"
-                        H.p $ H.a ! A.href "/product" $ H.toHtml $ cartProdName
+                        H.p $ H.a ! A.href url $ H.toHtml $ cartProdName
                     H.p ! A.class_ "shopping-cart-item-qty" $ do H.toHtml cartProdQty
                     H.div ! A.class_ "shopping-cart-item-price" $ do
                         H.p $ "$"
@@ -75,4 +78,18 @@ addToCart acid = do
                 let url = "/product?id=" ++ show (unProductId $ cartProdId cartProd) ++ "&mode=user"
                 seeOther url (toResponse ())
         ]
-    
+
+homeURL :: String
+homeURL = "/"
+
+purchase :: AcidState Store -> ServerPart Response
+purchase acid = do
+    method POST
+    update' acid EmptyCart
+    seeOther homeURL (toResponse ())
+
+calculateSubtotal :: [CartProduct] -> Int
+calculateSubtotal cps = foldr (+) 0 $ map priceByQty cps
+
+priceByQty :: CartProduct -> Int
+priceByQty prod = (cartProdPrice prod) * (cartProdQty prod)

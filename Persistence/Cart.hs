@@ -37,3 +37,8 @@ cartProducts = do
  let products' =
         IxSet.toAscList (Proxy :: Proxy ProductId) userCart
  return products'
+
+emptyCart :: Update Store ()
+emptyCart =
+  do s@Store{..} <- get
+     put $ s { userCart = empty }
