@@ -93,7 +93,9 @@ newtype CartProdQty = CartProdQty Int
 $(deriveSafeCopy 0 'base ''CartProdQty)
 
 data CartProduct = CartProduct
-    { cartProdId      :: ProductId
+    { cartProdId        :: ProductId
+    , cartProdName      :: Text
+    , cartProdPrice     :: Int
     , cartProdQty       :: Int
     }
     deriving (Eq, Ord, Data, Typeable)

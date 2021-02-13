@@ -29,4 +29,5 @@ $(makeAcidic ''Store
   , 'userById
   , 'userByEmailAsc
   , 'appendProduct
+  , 'cartProducts
   ])

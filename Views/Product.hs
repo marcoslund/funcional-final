@@ -74,6 +74,6 @@ viewProduct acid = do
                                  H.p ! A.class_ "detail-title" $ do "About this item"
                                  H.p ! A.class_ "detail-indent" $ do H.toHtml description
                               H.div ! A.class_ "add-cart-btn-container" $ do
-                                 H.li $ H.form ! A.enctype "multipart/form-data"
+                                 H.form ! A.enctype "multipart/form-data"
                                     ! A.method "POST"
                                     ! A.action (H.toValue $ "/addtocart?id=" ++ show (unProductId pid)) $ H.button ! A.name "addtocart" ! A.value "addtocart" ! A.class_ "action-button" $ "Add to cart"

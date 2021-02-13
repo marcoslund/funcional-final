@@ -55,7 +55,6 @@ updateProduct updatedProduct = do
              IxSet.updateIx (productId updatedProduct) updatedProduct products
           }
 
-
 productById :: ProductId -> Query Store (Maybe Product)
 productById pid =
      do Store{..} <- ask
