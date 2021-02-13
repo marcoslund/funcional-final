@@ -111,7 +111,7 @@ viewEditProduct acid = do
                    , stock = read (unpack productStock)
                    }
          update' acid (UpdateProduct updatedProduct)
-         seeOther ("/product?id=" ++ (show $ unProductId pid)) (toResponse ())
+         seeOther ("/product?id=" ++ (show $ unProductId pid) ++ "&mode=admin") (toResponse ())
                   ]
 
       where lookText' = fmap toStrict . lookText

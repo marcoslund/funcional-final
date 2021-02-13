@@ -22,12 +22,12 @@ home acid =
     do  mode   <- looks "mode"
         case mode of
             ["admin"] ->
-                ok $ template "home" [] (Mode "admin") $ do
+                ok $ template "Home" [] (Mode "admin") $ do
                     H.div ! A.class_ "home-img" $ do
                         H.div ! A.class_ "home-img-container" $ do
                             H.h1 ! A.class_ "home-title" $ "Our best products just one click away from you"
             _ ->
-                ok $ template "home" [] (Mode "user") $ do
+                ok $ template "Home" [] (Mode "user") $ do
                     H.div ! A.class_ "home-img" $ do
                         H.div ! A.class_ "home-img-container" $ do
                             H.h1 ! A.class_ "home-title" $ "Our best products just one click away from you"

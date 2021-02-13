@@ -14,11 +14,13 @@ import qualified Data.IxSet as IxSet
 import qualified Data.Text  as Text
 import Data.Time            (UTCTime(..))
 
-
-appendProduct :: ProductId -> Int -> Update Store Cart
-appendProduct prod qty =
+appendProduct :: ProductId -> Update Store CartProduct
+appendProduct prod =
     do s@Store{..} <- get
-       let prd  = CartProduct (prod, qty)
-       put $ s { userCart = Cart { purchasedProducts = IxSet.insert prd $ purchasedProducts $ userCart }
+       let cartProduct =
+                  CartProduct { cartProdId = prod
+                   , cartProdQty = 1
+                   }
+       put $ s { userCart = IxSet.insert cartProduct userCart
                }
-       return userCart
+       return cartProduct

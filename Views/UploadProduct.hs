@@ -96,7 +96,7 @@ viewNewProduct acid = do
                    , newProdStock = read (unpack productStock)
                    }
          prod <- update' acid (CreateProduct newProduct now)
-         seeOther ("/product?id=" ++ (show $ unProductId $ productId prod)) (toResponse ())
+         seeOther ("/product?id=" ++ (show $ unProductId $ productId prod) ++ "&mode=admin") (toResponse ())
                   ]
 
       where lookText' = fmap toStrict . lookText

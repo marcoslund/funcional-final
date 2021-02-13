@@ -13,8 +13,16 @@ import Data.Acid.Local      (createCheckpointAndClose)
 import Data.IxSet           (Indexable(..))
 import Happstack.Server     ( nullConf, simpleHTTP)
 
+import           Logging.Config.Json (getManager)
+import           Logging.Global      (run)
+
 main :: IO ()
-main =
+main = getManager "{}" >>= flip run app
+
+logger = "Main"
+
+app :: IO ()
+app =
     do bracket (openLocalState initialStoreState)
                (createCheckpointAndClose)
                (\acid ->

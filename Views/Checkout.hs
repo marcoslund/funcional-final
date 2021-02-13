@@ -9,12 +9,18 @@ import Persistence.Initializer
 import Persistence.Product
 import Views.Template
 
+import Control.Monad        (msum)
 import Data.Acid            (AcidState)
 import Data.Acid.Advanced   (query', update')
 import Happstack.Server     ( ServerPart, Method(GET, POST), Response, ok, lookRead, method, seeOther, toResponse)
 import           Text.Blaze.Html ((!), Html)
 import qualified Text.Blaze.Html4.Strict as H
 import qualified Text.Blaze.Html4.Strict.Attributes as A
+
+import           Logging.Global.TH   (debug, error, fatal, info, logv, warn)
+import           Prelude             hiding (error)
+
+logger = "Checkout"
 
 viewCheckout  :: AcidState Store -> ServerPart Response
 viewCheckout acid =
@@ -63,9 +69,13 @@ viewCheckout acid =
 
 addToCart :: AcidState Store -> ServerPart Response
 addToCart acid = do
-  method POST
-  pid   <- ProductId <$> lookRead "id"
-  
-  update' acid (AppendProduct pid 1)
-  let url = "/product?id=" ++ show (unProductId $ pid)
-  seeOther url (toResponse ())
+    msum
+        [
+            do  method POST
+                productid   <- ProductId <$> lookRead "id"
+                cartProd <- update' acid $ AppendProduct productid
+
+                let url = "/product?id=" ++ show (unProductId $ cartProdId cartProd) ++ "&mode=user"
+                seeOther url (toResponse ())
+        ]
+    
