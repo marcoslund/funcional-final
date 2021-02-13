@@ -43,13 +43,17 @@ viewCheckout acid = do
                     H.h2 $ "Order Summary"
                     H.div ! A.class_ "payment-subtotal" $ do
                         H.p $ do "Subtotal"
-                        H.p $ do H.toHtml (calculateSubtotal cartProds)
+                        H.div ! A.class_ "flex" $ do
+                            H.p $ do "$"
+                            H.p $ do H.toHtml (calculateSubtotal cartProds)
                     H.div ! A.class_ "payment-shipping" $ do
                         H.p $ do "Shipping"
                         H.p $ do "$30"
                     H.div ! A.class_ "payment-total" $ do
                         H.p $ do "Estimated Total"
-                        H.p $ do H.toHtml ((calculateSubtotal cartProds) + 30)
+                        H.div ! A.class_ "flex" $ do
+                            H.p $ do "$"
+                            H.p $ do H.toHtml ((calculateSubtotal cartProds) + 30)
                     H.div ! A.class_ "purchase-btn-container" $ do
                         H.form ! A.enctype "multipart/form-data"
                                     ! A.method "POST"

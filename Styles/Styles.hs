@@ -98,12 +98,12 @@ css =
       , ".payment-total { display: flex; justify-content: space-between; padding: 10px 0 0; border-top: 2px #ccc solid; margin-top: 10px; }"
       , ".payment-total:last-child { font-weight: bold; }"
       , ".purchase-btn-container { margin-top: 20px; display: flex; justify-content: center; }"
-      , ".purchase-btn-container button { width: 40%; }"
       , ".confirm-button { background-color: #52948b; color: white; }"
       , ".confirm-button:hover { background-color: #396761; }"
       , ".upload-product-form { margin: 30px; display: flex; flex-flow: column; }"
       , ".upload-product-form label { width: 10em; }"
       , ".form-item { padding: 10px 0; }"
       , ".upload-product-btn-container { margin-top: 20px; }"
+      , ".flex { display: flex; }"
       ]
  in H.style ! A.type_ "text/css" $ H.toHtml s
