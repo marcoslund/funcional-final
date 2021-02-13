@@ -104,7 +104,7 @@ $(deriveSafeCopy 0 'base ''CartProduct)
 instance Indexable CartProduct where
     empty = ixSet
         [ ixFun $ \pr -> [ cartProdId pr  ]
-        , ixFun $ \pr -> [ CartProdQty $ cartProdQty pr ]
+        -- , ixFun $ \pr -> [ CartProdQty $ cartProdQty pr ]
         ]
 
 ------------------------------------------------

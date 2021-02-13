@@ -16,20 +16,16 @@ import qualified Data.Text  as Text
 import Data.Time            (UTCTime(..))
 import Data.Maybe            (fromJust)
 
-appendProduct :: ProductId -> Update Store CartProduct
+appendProduct :: ProductId -> Update Store ()
 appendProduct prodId =
     do s@Store{..} <- get
        let  prod = fromJust $ getOne $ products @= prodId
-            cartProduct =
-                  CartProduct {
-                     cartProdId = prodId
-                   , cartProdName = name prod
-                   , cartProdPrice = price prod
-                   , cartProdQty = 1
-                   }
-       put $ s { userCart = IxSet.insert cartProduct userCart
-               }
-       return cartProduct
+            cartProd = getOne $ userCart @= prodId
+       case cartProd of
+          Nothing -> put $ s  { userCart = IxSet.insert (CartProduct { cartProdId = prodId, cartProdName = name prod, cartProdPrice = price prod, cartProdQty = 1}) userCart
+                              }
+          _ -> put $ s  { userCart = IxSet.updateIx (cartProdId $ fromJust cartProd) (CartProduct {cartProdId = prodId, cartProdName = name prod, cartProdPrice = price prod, cartProdQty = 1 + (cartProdQty $ fromJust cartProd)}) userCart
+                        }
 
 cartProducts :: Query Store [CartProduct]
 cartProducts = do

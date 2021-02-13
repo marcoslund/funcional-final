@@ -73,9 +73,9 @@ addToCart acid = do
         [
             do  method POST
                 productid   <- ProductId <$> lookRead "id"
-                cartProd <- update' acid $ AppendProduct productid
+                update' acid $ AppendProduct productid
 
-                let url = "/product?id=" ++ show (unProductId $ cartProdId cartProd) ++ "&mode=user"
+                let url = "/product?id=" ++ show (unProductId $ productid) ++ "&mode=user"
                 seeOther url (toResponse ())
         ]
 
