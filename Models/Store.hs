@@ -134,7 +134,6 @@ data Product = Product
     , price       :: Int
     , category    :: CategoryId
     , stock       :: Int
-    --, tags    :: [Text]
     }
     deriving (Eq, Ord, Data, Typeable)
     
@@ -146,11 +145,9 @@ instance Indexable Product where
     , ixFun $ \pr -> [ Name  $ name pr  ]
     , ixFun $ \pr -> [ Brand $ brand pr ]
     , ixFun $ \pr -> [ status pr ]
-    -- , ixFun $ \bp -> map Tag (tags bp)
-    , ixFun $ (:[]) . date  -- point-free, just for variety
+    , ixFun $ (:[]) . date
     , ixFun $ \pr -> [ category pr ]
     , ixFun $ \pr -> [ Price $ price pr ]
-    -- , ixFun $ \bp -> [ WordCount (length $ Text.words $ body bp) ]
     , ixFun $ \pr -> [ Stock $ stock pr ]
     ]
 
